@@ -13,107 +13,84 @@
                         </div>
                         <div class="col-md-6 col-sm-6">
                            <div class="wheather">
-                            <div class="stormy rainy animated pulse infinite">
-                              <div class="shadow">
-                                
-                              </div>
-                            </div>
-                            <div class="sub-wheather">
-                              <div class="thunder">
-                                
-                              </div>
-                              <div class="rain">
-                                  <div class="droplet droplet1"></div>
-                                  <div class="droplet droplet2"></div>
-                                  <div class="droplet droplet3"></div>
-                                  <div class="droplet droplet4"></div>
-                                  <div class="droplet droplet5"></div>
-                                  <div class="droplet droplet6"></div>
+                             <div class="mostly-suny suny">
+                                <div class="sun animated pulse infinite">
+                                </div>
+                                <div class="cloudy animated pulse infinite">
+                                  <div class="shadow">
+
+                                  </div>
                                 </div>
                             </div>
                           </div>
-                        </div>                   
+                        </div>
                     </div>
-                  </div>                    
+                  </div>
                 </div>
 
-                <div class="col-md-12" style="padding:20px;">
-                    <div class="col-md-12 padding-0">
-                        <div class="col-md-8 padding-0">
-                            <div class="col-md-12 padding-0">
-                                <div class="col-md-6">
-                                    <div class="panel box-v1">
-                                      <div class="panel-heading bg-white border-none">
-                                        <div class="col-md-6 col-sm-6 col-xs-6 text-left padding-0">
-                                          <h4 class="text-left">Visit</h4>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
-                                           <h4>
-                                           <span class="icon-user icons icon text-right"></span>
-                                           </h4>
-                                        </div>
-                                      </div>
-                                      <div class="panel-body text-center">
-                                        <h1>51181,320</h1>
-                                        <p>User active</p>
-                                        <hr/>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="panel box-v1">
-                                      <div class="panel-heading bg-white border-none">
-                                        <div class="col-md-6 col-sm-6 col-xs-6 text-left padding-0">
-                                          <h4 class="text-left">Orders</h4>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-6 text-right">
-                                           <h4>
-                                           <span class="icon-basket-loaded icons icon text-right"></span>
-                                           </h4>
-                                        </div>
-                                      </div>
-                                      <div class="panel-body text-center">
-                                        <h1>51181,320</h1>
-                                        <p>New Orders</p>
-                                        <hr/>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="col-md-12 padding-0">
-                              <div class="panel box-v2">
-                                  <div class="panel-heading padding-0">
-                                    <img src="asset/img/bg2.jpg" class="box-v2-cover img-responsive"/>
-                                    <div class="box-v2-detail">
-                                      <img src="asset/img/user.png" class="img-responsive"/>
-                                      <h4><?php echo $this->session->userdata('username');?></h4>
-                                    </div>
-                                  </div>
-                                  <div class="panel-body">
-                                    <div class="col-md-12 padding-0 text-center">
-                                      <div class="col-md-4 col-sm-4 col-xs-6 padding-0">
-                                          <h3>2.000</h3>
-                                          <p>Post</p>
-                                      </div>
-                                      <div class="col-md-4 col-sm-4 col-xs-6 padding-0">
-                                          <h3>2.232</h3>
-                                          <p>share</p>
-                                      </div>
-                                      <div class="col-md-4 col-sm-4 col-xs-12 padding-0">
-                                          <h3>4.320</h3>
-                                          <p>photos</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                              </div>
-                            </div>
+                <div class="col-md-12 top-20 padding-0">
+              <div class="col-md-12">
+                <div class="panel">
+                  <div class="panel-body">
+                  <div class="responsive-table">
 
-                            
-                            
-                        </div>
-                    </div>
-				</div>
+                    <table class="table table-striped table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Jabatan</th>
+                        <th>Total</th>
+                        <th>Baru</th>
+                        <?php foreach ($tingkatan as $key) { ?>
+                        <th><?php echo $key->nama_tingkatan;?></th>
+                      <?php } ?>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($jabatan as $key1) { ?>
+                          <tr>
+                            <?php
+                            $counting = 0;
+                            $counting1 = 0;
+                            foreach ($pengirim as $peng) {
+                              if ($key1->id_jabatan == $peng->jabatan_id) {
+                                $cc = $peng->level;
+                                $cc1 = substr($cc,1);
+                                $cc2 = substr($cc,0,1);
+                                if ($cc1 == 0) {
+                      						if ($cc2 == "P") {
+                      							# code...
+                      						} elseif ($cc2 == "N") {
+                      							# code...
+                      						} else {
+                      							$counting = $counting +1;
+                      						}
+                      					} $counting1 = $counting1 +1;
+                              }
+                            }?>
+                          <td><?php echo $key1->nama_jabatan; ;?></td>
+                          <td><?php echo $counting1;?></td>
+                          <td><a href="<?php echo base_url();?>lamaran"><?php echo $counting;?></a></td>
+                          <?php foreach ($tingkatan as $key2) {
+                            $counting2 = 0;
+                            foreach ($pengirim as $p) {
+                              if ($key1->id_jabatan == $p->jabatan_id) {
+                              $cc = $p->level; $cc1 = substr($cc,1); $cc2 = substr($cc,0,1);
+                              if ($cc1 == $key2->ke) {
+                                $counting2 = $counting2 +1;
+                            }
+                          }
+                        } ?>
+                          <td><a href="<?php $tt=$key2->ke; echo base_url("tingkat/".$tt);?>"><?php echo $counting2;?></a></td>
+                        <?php } ?>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                  </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
       	</div>
           <!-- end: content -->

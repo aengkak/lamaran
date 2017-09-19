@@ -64,9 +64,9 @@
 
                 </div>
               </div>
-            </div>  
+            </div>
           <!-- end: right menu -->
-          
+
       </div>
 
       <!-- start: Mobile -->
@@ -74,21 +74,41 @@
         <div class="mimin-mobile-menu-list">
             <div class="col-md-12 sub-mimin-mobile-menu-list animated fadeInLeft">
                 <ul class="nav nav-list">
-                    <li class="ripple"><a href="<?php echo base_url('index');?>"><span class="fa fa-home fa"></span>Dashboard</a></li>
-                    <li class="ripple">
-                      <a class="tree-toggle nav-header">
-                        <span class="fa fa-users"></span> Member
-                        <span class="fa-angle-right fa right-arrow text-right"></span>
-                      </a>
-                      <ul class="nav nav-list tree">
-                        <li><a href="<?php echo base_url('request');?>">Request</a></li>
-                        <li><a href="<?php echo base_url('member');?>">View</a></li>
-                      </ul>
-                    </li>
-                    <li class="ripple"><a href="<?php echo base_url('partner');?>"><span class="icons icon-link"></span>Partner</a></li>
-                  </ul>
+                  <li class="ripple"><a href="<?php echo base_url('home');?>"><span class="fa fa-home fa"></span>Beranda</a></li>
+                  <li class="ripple">
+                    <a class="tree-toggle nav-header">
+                      <span class="fa fa-pencil-square"></span> Pengaturan
+                      <span class="fa-angle-right fa right-arrow text-right"></span>
+                    </a>
+                    <ul class="nav nav-list tree">
+                      <?php $akses_id = $this->session->userdata('akses_id');
+                      $res1 = explode(',',$akses_id);
+                      foreach ($akses as $key) {
+                        foreach ($res1 as $key1 => $value) {
+                          if ($key->id_akses == $value) { ?>
+                            <li><a href="<?php echo base_url($key->akses);?>"><?php echo $key->akses;?></a></li>
+                      <?php }
+                          }
+                       } ?>
+                     </ul>
+                  </li>
+                  <li class="ripple"><a href="<?php echo base_url('lamaran');?>"><span class="fa fa-file-code-o"></span>Baru</a></li>
+                  <li class="ripple">
+                    <a class="tree-toggle nav-header">
+                      <span class="fa-area-chart fa"></span> Tingkatan
+                      <span class="fa-angle-right fa right-arrow text-right"></span>
+                    </a>
+                    <ul class="nav nav-list tree">
+                      <?php
+                        foreach ($tingkatan as $t) { ?>
+                          <li><a href="<?php echo base_url()?>tingkat/<?php echo $t->ke;?>"><?php echo $t->nama_tingkatan;?></a></li>
+                      <?php }
+                      ?>
+                    </ul>
+                  </li>
+                </ul>
             </div>
-        </div>       
+        </div>
       </div>
       <button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
         <span class="fa fa-bars"></span>
@@ -99,8 +119,8 @@
     <script src="<?php echo base_url('asset/js/jquery.min.js');?>"></script>
     <script src="<?php echo base_url('asset/js/jquery.ui.min.js');?>"></script>
     <script src="<?php echo base_url('asset/js/bootstrap.min.js');?>"></script>
-   
-    
+
+
     <!-- plugins -->
     <script src="<?php echo base_url('asset/js/plugins/moment.min.js');?>"></script>
     <script src="<?php echo base_url('asset/js/plugins/fullcalendar.min.js');?>"></script>
@@ -303,7 +323,7 @@
                 });
 
             };
-        
+
         //  end:  Chart =============
 
         // start: Calendar =========
@@ -395,14 +415,14 @@
   $(document).ready(function(){
     $('#datatables-example').DataTable();
   });
-  
+
 </script>
 
 <script type="text/javascript">
   $(document).ready(function(){
 
     $(".nav-tabs a").click(function (e) {
-      e.preventDefault();  
+      e.preventDefault();
       $(this).tab('show');
     });
 
@@ -416,11 +436,11 @@ $( "#datepicker" ).bootstrapMaterialDatePicker({ weekStart : 0, time: false,anim
 		function hanyaAngka(evt) {
 		  var charCode = (evt.which) ? evt.which : event.keyCode
 		   if (charCode > 31 && (charCode < 48 || charCode > 57))
- 
+
 		    return false;
 		  return true;
 		}
-	</script> 
+	</script>
 	<script>
 	$(document).ready(function() {
     $("#datauser").load("datauser",function(data){

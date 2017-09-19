@@ -1,4 +1,4 @@
-				
+
                       <thead>
                         <tr>
 						  <th>No</th>
@@ -11,8 +11,8 @@
                         <tr>
                           <td><?php echo $no;?></td>
                           <td><?php echo $u->username;?></td>
-                          <td><button class="btn btn-warning fa fa-edit" onclick="edituser(<?php echo $u->id;?>)"></button>
-							  <button class="btn btn-danger fa fa-close" onclick="deleteuser(<?php echo $u->id;?>)"> </button>
+                          <td><button class="btn btn-warning fa fa-edit" onclick="edituser(<?php echo $u->id_user;?>)"></button>
+							  <button class="btn btn-danger fa fa-close" onclick="deleteuser(<?php echo $u->id_user;?>)"> </button>
 						  </td>
                         </tr>
                         <?php $no++; endforeach;?>

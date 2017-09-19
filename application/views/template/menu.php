@@ -8,7 +8,7 @@
                 <span class="middle"></span>
                 <span class="bottom"></span>
               </div>
-                <a href="<?php echo base_url('home');?>" class="navbar-brand"> 
+                <a href="<?php echo base_url('home');?>" class="navbar-brand">
                  <b>Karunia</b>
                 </a>
 
@@ -30,8 +30,8 @@
                   <li class="dropdown avatar-dropdown">
                    <img src="<?php echo base_url('asset/img/user.png');?>" class="img-circle avatar" alt="user name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"/>
                    <ul class="dropdown-menu user-dropdown">
-                     <li><a href="<?php echo base_url('profile');?>"><span class="fa fa-user"></span> My Profile</a></li>
-                     <li role="separator" class="divider"></li>
+                    <!-- <li><a href="<?php echo base_url('profile');?>"><span class="fa fa-user"></span> My Profile</a></li>
+                     <li role="separator" class="divider"></li> -->
                      <li class="more">
                       <ul>
                         <li><a href="<?php echo base_url('logout');?>"><span class="fa fa-power-off "></span> Log out</a></li>
@@ -47,7 +47,7 @@
       <!-- end: Header -->
 
       <div class="container-fluid mimin-wrapper">
-  
+
           <!-- start:Left Menu -->
             <div id="left-menu">
               <div class="sub-left-menu scroll">
@@ -57,20 +57,39 @@
                       <h1 class="animated fadeInLeft">21:00</h1>
                       <p class="animated fadeInRight">Sat,October 1st 2029</p>
                     </li>
-                    <li class="ripple"><a href="<?php echo base_url('home');?>"><span class="fa fa-home fa"></span>Dashboard</a></li>
-					<li class="ripple">
+                    <li class="ripple"><a href="<?php echo base_url('home');?>"><span class="fa fa-home fa"></span>Beranda</a></li>
+					          <li class="ripple">
                       <a class="tree-toggle nav-header">
-                        <span class="fa fa-users"></span> Data
+                        <span class="fa fa-pencil-square"></span> Pengaturan
                         <span class="fa-angle-right fa right-arrow text-right"></span>
                       </a>
                       <ul class="nav nav-list tree">
-                        <li><a href="<?php echo base_url('Jabatan');?>">Jabatan</a></li>
-                        <li><a href="<?php echo base_url('Pengirim');?>">Pengirim</a></li>
-						<li><a href="<?php echo base_url('user');?>">User</a></li>
-					  </ul>
+                        <?php $akses_id = $this->session->userdata('akses_id');
+                    		$res1 = explode(',',$akses_id);
+                        foreach ($akses as $key) {
+                          foreach ($res1 as $key1 => $value) {
+                            if ($key->id_akses == $value) { ?>
+                              <li><a href="<?php echo base_url($key->akses);?>"><?php echo $key->akses;?></a></li>
+                        <?php }
+                            }
+                         } ?>
+					             </ul>
                     </li>
- 
-				  </ul>
-                </div>
+                    <li class="ripple"><a href="<?php echo base_url('lamaran');?>"><span class="fa fa-file-code-o"></span>Baru</a></li>
+                    <li class="ripple">
+                      <a class="tree-toggle nav-header">
+                        <span class="fa-area-chart fa"></span> Tingkatan
+                        <span class="fa-angle-right fa right-arrow text-right"></span>
+                      </a>
+                      <ul class="nav nav-list tree">
+                        <?php
+                          foreach ($tingkatan as $t) { ?>
+                            <li><a href="<?php echo base_url()?>tingkat/<?php echo $t->ke;?>"><?php echo $t->nama_tingkatan;?></a></li>
+                        <?php }
+                        ?>
+                      </ul>
+                    </li>
+				       </ul>
+             </div>
             </div>
           <!-- end: Left Menu -->
