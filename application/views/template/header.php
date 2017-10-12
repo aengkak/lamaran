@@ -9,8 +9,8 @@ if($this->session->userdata('status') != "login"){
 <head>
 
 	<meta charset="utf-8">
-	<meta name="description" content="Miminium Admin Template v.1">
-	<meta name="author" content="Isna Nur Azis">
+	<meta name="description" content="Karunia Travel">
+	<meta name="author" content="Endeavor">
 	<meta name="keyword" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard</title>
@@ -26,6 +26,7 @@ if($this->session->userdata('status') != "login"){
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('asset/css/plugins/mediaelementplayer.css');?>"/>
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('asset/css/plugins/fullcalendar.min.css');?>"/>
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('asset/css/plugins/bootstrap-material-datetimepicker.css');?>"/>
+			<link rel="stylesheet" type="text/css" href="<?php echo base_url('asset/css/plugins/icheck/skins/flat/_all.css');?>"/>
 			<link href="<?php echo base_url('asset/css/style.css');?>" rel="stylesheet">
 			<link rel="stylesheet" type="text/css" href="<?php echo base_url('asset/css/bootstrap.css');?>">
 	<!-- end: Css -->
@@ -37,6 +38,10 @@ if($this->session->userdata('status') != "login"){
 			  return true;
 			}
 		</script>
+		<!-- start: Javascript -->
+		<script src="<?php echo base_url('asset/js/jquery.min.js');?>"></script>
+		<script src="<?php echo base_url('asset/js/jquery.ui.min.js');?>"></script>
+		<script src="<?php echo base_url('asset/js/bootstrap.min.js');?>"></script>
 
 	<link rel="shortcut icon" href="<?php echo base_url('asset/img/logomi.png');?>">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

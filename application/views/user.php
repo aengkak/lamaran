@@ -31,7 +31,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h3 class="modal-title">Form</h3>
+					<h3 class="modal-title"></h3>
 				</div>
 				<div class="modal-body form">
 					<form action="#" id="form" class="form-horizontal">
@@ -62,6 +62,10 @@
       $('#modal_form').modal('show'); // show bootstrap modal
       $("#modalbody").load("<?php echo base_url();?>modaluser/",function(data){
 		      $("#modalbody").html(data);
+					$('input').iCheck({
+	         checkboxClass: 'icheckbox_flat-blue',
+	         radioClass: 'iradio_flat-blue'
+	       });
 	    });
     }
     function edituser(id)
@@ -71,6 +75,10 @@
       $('#modal_form').modal('show'); // show bootstrap modal
       $("#modalbody").load("<?php echo base_url();?>useredit/"+id,function(data){
 		      $("#modalbody").html(data);
+					$('input').iCheck({
+	         checkboxClass: 'icheckbox_flat-blue',
+	         radioClass: 'iradio_flat-blue'
+	       });
 	    });
     }
     function save3()
@@ -121,4 +129,11 @@
         });
       }
     }
+</script>
+<script>
+$(document).ready(function() {
+	$("#datauser").load("datauser",function(data){
+	$('#datauser').DataTable();
+});
+});
 </script>

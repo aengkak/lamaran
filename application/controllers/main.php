@@ -9,15 +9,32 @@ class Main extends CI_Controller {
 		$this->load->model('Komentar');
 		$this->load->model('Akses');
 		$this->load->model('Tingkatan');
+		$this->load->model('Csv');
+		$this->load->model('Notif');
+		$this->perPage = 4;
 	}
 	public function index() {
 		if($_POST==NULL) {
+			date_default_timezone_set('Asia/Jakarta');
+			$date = date("Y-m-d");
+			$date1 = date ("Y-m-d", strtotime("-17 year", strtotime($date)));
+			$data['date'] = $date1;
 			$data['jabatan'] = $this->Jabatan->active();
+			$data['data'] = array(
+            'captcha' => $this->recaptcha->getWidget(), // menampilkan recaptcha
+            'script_captcha' => $this->recaptcha->getScriptTag(), // javascript recaptcha ditaruh di head
+        );
 			$this->load->view('apply', $data);
 		} else {
 			$this->Lamaran->add();
 			echo "<script>alert('Terima Kasih, Data Telah Kami Terima')
 				  location.replace('')</script>";
+		}
+	}
+	public function wa() {
+		$wa = $this->input->post('wa', TRUE);
+		if ($wa == "N") {
+			$this->load->view('modal/wa');
 		}
 	}
 	public function selectj() {
@@ -29,6 +46,16 @@ class Main extends CI_Controller {
 			$data['cek'] = "1";
 		}
 		$this->load->view('modal/apply', $data);
+	}
+	public function selectj1() {
+		$data['c'] = $this->Jabatan->select();
+		$c = $data['c']->extra;
+		if ($c == 0) {
+			$data['cek'] = "0";
+		} else {
+			$data['cek'] = "1";
+		}
+		$this->load->view('modal/apply1', $data);
 	}
 	public function login() {
 		if($_POST==NULL) {
@@ -49,20 +76,70 @@ class Main extends CI_Controller {
 		redirect(base_url('home'));
 	}
 	public function home() {
+		//total rows count
+    $totalRec = count($this->Notif->getRows());
+		//pagination configuration
+    $config['target']      = '#postList';
+    $config['base_url']    = base_url().'ajaxPaginationData';
+    $config['total_rows']  = $totalRec;
+    $config['per_page']    = $this->perPage;
+    $this->ajax_pagination->initialize($config);
+		//get the posts data
+    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
 		$menu['akses'] = $this->Akses->selectAll();
 		$menu['tingkatan'] = $this->Tingkatan->selectAll();
+		$menu['pengirim'] = $this->Lamaran->selectAll();
+		$menu['notif'] = $this->Notif->selectAll();
+		$data['keluar'] = $this->Lamaran->keluar();
+		$data['lulus'] = $this->Lamaran->likel();
 		$data['jabatan'] = $this->Jabatan->selectAll();
 		$data['pengirim'] = $this->Lamaran->selectAll();
 		$data['tingkatan'] = $this->Tingkatan->selectAll();
+		$data['likeno'] = $this->Lamaran->likeno();
 		$this->load->view('template/header');
 		$this->load->view('template/menu', $menu);
 		$this->load->view('home', $data);
-		$this->load->view('template/footer');
+		$this->load->view('template/footer', $menu);
 	}
+	function ajaxPaginationData() {
+        $page = $this->input->post('page');
+        if(!$page){
+            $offset = 0;
+        }else{
+            $offset = $page;
+        }
+        //total rows count
+        $totalRec = count($this->Notif->getRows());
+        //pagination configuration
+        $config['target']      = '#postList';
+        $config['base_url']    = base_url().'ajaxPaginationData';
+        $config['total_rows']  = $totalRec;
+        $config['per_page']    = $this->perPage;
+				$config['page']    = $page;
+
+        $this->ajax_pagination->initialize($config);
+
+        //get the posts data
+        $data['posts'] = $this->Notif->getRows(array('start'=>$offset,'limit'=>$this->perPage));
+
+        //load the view
+        $this->load->view('modal/ajax-pagination-data', $data, false);
+  }
 	public function user() {
+		//total rows count
+    $totalRec = count($this->Notif->getRows());
+		//pagination configuration
+    $config['target']      = '#postList';
+    $config['base_url']    = base_url().'ajaxPaginationData';
+    $config['total_rows']  = $totalRec;
+    $config['per_page']    = $this->perPage;
+    $this->ajax_pagination->initialize($config);
+		//get the posts data
+    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
 		$menu['akses'] = $this->Akses->selectAll();
 		$menu['level'] = $this->Komentar->max();
 		$menu['tingkatan'] = $this->Tingkatan->selectAll();
+		$menu['notif'] = $this->Notif->selectAll();
 		$data['user'] = $this->User->selectAll();
 
 		$akses_id = $this->session->userdata('akses_id');
@@ -78,7 +155,7 @@ class Main extends CI_Controller {
 			$this->load->view('template/header');
 			$this->load->view('template/menu', $menu);
 			$this->load->view('user', $data);
-			$this->load->view('template/footer');
+			$this->load->view('template/footer', $menu);
 		} else {
 			redirect(base_url('home'));
 		}
@@ -115,9 +192,20 @@ class Main extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 	public function jabatan() {
+		//total rows count
+    $totalRec = count($this->Notif->getRows());
+		//pagination configuration
+    $config['target']      = '#postList';
+    $config['base_url']    = base_url().'ajaxPaginationData';
+    $config['total_rows']  = $totalRec;
+    $config['per_page']    = $this->perPage;
+    $this->ajax_pagination->initialize($config);
+		//get the posts data
+    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
 		$menu['akses'] = $this->Akses->selectAll();
 		$menu['level'] = $this->Komentar->max();
 		$menu['tingkatan'] = $this->Tingkatan->selectAll();
+		$menu['notif'] = $this->Notif->selectAll();
 		$data['jabatan'] = $this->Jabatan->selectAll();
 
 		$akses_id = $this->session->userdata('akses_id');
@@ -133,7 +221,7 @@ class Main extends CI_Controller {
 			$this->load->view('template/header');
 			$this->load->view('template/menu', $menu);
 			$this->load->view('jabatan', $data);
-			$this->load->view('template/footer');
+			$this->load->view('template/footer', $menu);
 		} else {
 			redirect(base_url('home'));
 		}
@@ -164,14 +252,74 @@ class Main extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 	public function lamaran() {
+		//total rows count
+    $totalRec = count($this->Notif->getRows());
+		//pagination configuration
+    $config['target']      = '#postList';
+    $config['base_url']    = base_url().'ajaxPaginationData';
+    $config['total_rows']  = $totalRec;
+    $config['per_page']    = $this->perPage;
+    $this->ajax_pagination->initialize($config);
+		//get the posts data
+    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
+		date_default_timezone_set('Asia/Jakarta');
+		$date = date("Y-m-d");
+		$date1 = date ("Y-m-d", strtotime("-17 year", strtotime($date)));
+		$data['date'] = $date1;
+		$u = $this->uri->segment('2');
+		if ($u != NULL) {
+			$data['ur'] = $u;
+		} else {
+			$data['ur'] = 0;
+		}
 		$menu['level'] = $this->Komentar->max();
 		$menu['akses'] = $this->Akses->selectAll();
+		$menu['jabatan'] = $this->Jabatan->selectAll();
 		$menu['tingkatan'] = $this->Tingkatan->selectAll();
+		$menu['notif'] = $this->Notif->selectAll();
 		$data['jabatan'] = $this->Jabatan->selectAll();
-		$data['pengirim'] = $this->Lamaran->selectAll();$this->load->view('template/header');
+		$data['pengirim'] = $this->Lamaran->selectAll();
+		$this->load->view('template/header');
 		$this->load->view('template/menu', $menu);
 		$this->load->view('pengirim', $data);
-		$this->load->view('template/footer');
+		$this->load->view('template/footer', $menu);
+	}
+	public function hapus() {
+		//total rows count
+    $totalRec = count($this->Notif->getRows());
+		//pagination configuration
+    $config['target']      = '#postList';
+    $config['base_url']    = base_url().'ajaxPaginationData';
+    $config['total_rows']  = $totalRec;
+    $config['per_page']    = $this->perPage;
+    $this->ajax_pagination->initialize($config);
+		//get the posts data
+    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
+		date_default_timezone_set('Asia/Jakarta');
+		$date = date("Y-m-d");
+		$date1 = date ("Y-m-d", strtotime("-17 year", strtotime($date)));
+		$data['date'] = $date1;
+		$u = $this->uri->segment('2');
+		if ($u != NULL) {
+			$data['ur'] = $u;
+		} else {
+			$data['ur'] = 0;
+		}
+		$menu['level'] = $this->Komentar->max();
+		$menu['akses'] = $this->Akses->selectAll();
+		$menu['jabatan'] = $this->Jabatan->selectAll();
+		$menu['tingkatan'] = $this->Tingkatan->selectAll();
+		$menu['notif'] = $this->Notif->selectAll();
+		$data['jabatan'] = $this->Jabatan->selectAll();
+		$data['pengirim'] = $this->Lamaran->selecttrash();
+		$this->load->view('template/header');
+		$this->load->view('template/menu', $menu);
+		$this->load->view('hapus', $data);
+		$this->load->view('template/footer', $menu);
+	}
+	public function excel() {
+		$data['pengirim'] = $this->Lamaran->excel();
+		$this->load->view('modal/excel', $data);
 	}
 	public function addlamaran() {
 		$data['jabatan'] = $this->Jabatan->active();
@@ -180,25 +328,74 @@ class Main extends CI_Controller {
 	public function addlamaran1() {
 		$this->Lamaran->add();
 	}
+	public function editlamaran($id) {
+		$data['pengirim'] = $this->Lamaran->select($id);
+		$this->load->view('modal/editlamaran', $data);
+	}
+	public function updatelamaran() {
+		$this->Lamaran->updatelamaran();
+	}
+	public function csv() {
+		$this->load->view('modal/csv');
+	}
+	public function importcsv() {
+		$this->Csv->import();
+	}
 	public function rate($id) {
 		$data['jabatan'] = $this->Jabatan->selectAll();
+		$data['tingkatan'] = $this->Tingkatan->selectAll();
 		$data['lamaran'] = $this->Lamaran->select($id);
 		$data['rate'] = $this->Komentar->select($id);
 		$this->load->view('modal/rate',$data);
 	}
 	public function rate1($id) {
+		$data['max'] = $this->Tingkatan->max();
 		$data['jabatan'] = $this->Jabatan->selectAll();
 		$data['lamaran'] = $this->Lamaran->select($id);
 		$data['tingkatan'] = $this->Tingkatan->selectAll();
 		$data['rate'] = $this->Komentar->select($id);
 		$this->load->view('modal/rate1',$data);
 	}
+	public function foto($id) {
+		$data['max'] = $this->Tingkatan->max();
+		$data['jabatan'] = $this->Jabatan->selectAll();
+		$data['lamaran'] = $this->Lamaran->select($id);
+		$data['tingkatan'] = $this->Tingkatan->selectAll();
+		$data['rate'] = $this->Komentar->select($id);
+		$this->load->view('modal/foto',$data);
+	}
+	public function rate2($id) {
+		$data['max'] = $this->Tingkatan->max();
+		$data['jabatan'] = $this->Jabatan->selectAll();
+		$data['lamaran'] = $this->Lamaran->select($id);
+		$data['tingkatan'] = $this->Tingkatan->selectAll();
+		$data['rate'] = $this->Komentar->select($id);
+		$this->load->view('modal/rate2',$data);
+	}
+	public function rate3($id) {
+		$data['max'] = $this->Tingkatan->max();
+		$data['jabatan'] = $this->Jabatan->selectAll();
+		$data['lamaran'] = $this->Lamaran->select($id);
+		$data['tingkatan'] = $this->Tingkatan->selectAll();
+		$data['rate'] = $this->Komentar->select($id);
+		$this->load->view('modal/rate3',$data);
+	}
+	public function rate4($id) {
+		$data['max'] = $this->Tingkatan->max();
+		$data['jabatan'] = $this->Jabatan->selectAll();
+		$data['lamaran'] = $this->Lamaran->select($id);
+		$data['tingkatan'] = $this->Tingkatan->selectAll();
+		$data['rate'] = $this->Komentar->select($id);
+		$this->load->view('modal/rate4',$data);
+	}
 	public function modalfoot($id) {
+		$data['rate'] = $this->Komentar->select($id);
 		$data['jabatan'] = $this->Jabatan->selectAll();
 		$data['lamaran'] = $this->Lamaran->select($id);
 		$this->load->view('modal/simpan',$data);
 	}
 	public function modalfoot1($id) {
+		$data['rate'] = $this->Komentar->select($id);
 		$data['jabatan'] = $this->Jabatan->selectAll();
 		$data['tingkatan'] = $this->Tingkatan->selectAll();
 		$data['lamaran'] = $this->Lamaran->select($id);
@@ -208,10 +405,25 @@ class Main extends CI_Controller {
 		$this->Komentar->add();
 	}
 	public function ldelete($id) {
-		echo json_encode(array("status" => TRUE));
 		$this->Lamaran->delete($id);
+		echo json_encode(array("status" => TRUE));
+	}
+	public function ldelete1($id) {
+		$this->Lamaran->delete1($id);
+		echo json_encode(array("status" => TRUE));
 	}
 	public function akses() {
+		//total rows count
+    $totalRec = count($this->Notif->getRows());
+		//pagination configuration
+    $config['target']      = '#postList';
+    $config['base_url']    = base_url().'ajaxPaginationData';
+    $config['total_rows']  = $totalRec;
+    $config['per_page']    = $this->perPage;
+    $this->ajax_pagination->initialize($config);
+		//get the posts data
+    $data['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
+		$data['notif'] = $this->Notif->selectAll();
 		$data['level'] = $this->Komentar->max();
 		$data['tingkatan'] = $this->Tingkatan->selectAll();
 		$data['akses'] = $this->Akses->selectAll();
@@ -229,7 +441,7 @@ class Main extends CI_Controller {
 		$this->load->view('template/header');
 		$this->load->view('template/menu', $data);
 		$this->load->view('akses', $data);
-		$this->load->view('template/footer');
+		$this->load->view('template/footer', $data);
 		} else {
 			redirect(base_url('home'));
 		}
@@ -256,9 +468,20 @@ class Main extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 	public function tingkatan() {
+		//total rows count
+    $totalRec = count($this->Notif->getRows());
+		//pagination configuration
+    $config['target']      = '#postList';
+    $config['base_url']    = base_url().'ajaxPaginationData';
+    $config['total_rows']  = $totalRec;
+    $config['per_page']    = $this->perPage;
+    $this->ajax_pagination->initialize($config);
+		//get the posts data
+    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
 		$menu['level'] = $this->Komentar->max();
 		$menu['akses'] = $this->Akses->selectAll();
 		$menu['tingkatan'] = $this->Tingkatan->selectAll();
+		$menu['notif'] = $this->Notif->selectAll();
 		$data['tingkatan'] = $this->Tingkatan->selectAll();
 
 		$akses_id = $this->session->userdata('akses_id');
@@ -274,7 +497,7 @@ class Main extends CI_Controller {
 		$this->load->view('template/header');
 		$this->load->view('template/menu', $menu);
 		$this->load->view('tingkatan', $data);
-		$this->load->view('template/footer');
+		$this->load->view('template/footer', $menu);
 	}else {
 			redirect(base_url('home'));
 		}
@@ -301,31 +524,116 @@ class Main extends CI_Controller {
 		$this->Tingkatan->update();
 		echo json_encode(array("status" => TRUE));
 	}
-	public function tingkat($id) {
-		$menu['level'] = $this->Komentar->max();
+	public function tingkat() {
+			$data['ur'] = $this->uri->segment('2');
+			$data['ke'] = $this->uri->segment('3');
+			$id = $this->uri->segment('3');
+			//total rows count
+	    $totalRec = count($this->Notif->getRows());
+			//pagination configuration
+	    $config['target']      = '#postList';
+	    $config['base_url']    = base_url().'ajaxPaginationData';
+	    $config['total_rows']  = $totalRec;
+	    $config['per_page']    = $this->perPage;
+	    $this->ajax_pagination->initialize($config);
+			//get the posts data
+	    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
+			$menu['level'] = $this->Komentar->max();
+			$menu['akses'] = $this->Akses->selectAll();
+			$menu['tingkatan'] = $this->Tingkatan->selectAll();
+			$menu['notif'] = $this->Notif->selectAll();
+			$data['max'] = $this->Tingkatan->max();
+			$data['jabatan'] = $this->Jabatan->selectAll();
+			$data['pengirim'] = $this->Lamaran->level($id);
+			$data['tingkatan'] = $this->Tingkatan->select($id);
+			$this->load->view('template/header');
+			$this->load->view('template/menu', $menu);
+			$this->load->view('level', $data);
+			$this->load->view('template/footer', $menu);
+	}
+	public function karyawan() {
+			$data['ur'] = $this->uri->segment('2');
+			$id = $this->uri->segment('2');
+			//total rows count
+	    $totalRec = count($this->Notif->getRows());
+			//pagination configuration
+	    $config['target']      = '#postList';
+	    $config['base_url']    = base_url().'ajaxPaginationData';
+	    $config['total_rows']  = $totalRec;
+	    $config['per_page']    = $this->perPage;
+	    $this->ajax_pagination->initialize($config);
+			//get the posts data
+	    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
+			$menu['level'] = $this->Komentar->max();
+			$menu['akses'] = $this->Akses->selectAll();
+			$menu['tingkatan'] = $this->Tingkatan->selectAll();
+			$menu['notif'] = $this->Notif->selectAll();
+			$data['max'] = $this->Tingkatan->max();
+			$data['jabatan'] = $this->Jabatan->selectAll();
+			$data['pengirim'] = $this->Lamaran->likel();
+			$this->load->view('template/header');
+			$this->load->view('template/menu', $menu);
+			$this->load->view('karyawan', $data);
+			$this->load->view('template/footer', $menu);
+	}
+	public function kkeluar() {
+			$data['ur'] = $this->uri->segment('2');
+			$id = $this->uri->segment('2');
+			//total rows count
+	    $totalRec = count($this->Notif->getRows());
+			//pagination configuration
+	    $config['target']      = '#postList';
+	    $config['base_url']    = base_url().'ajaxPaginationData';
+	    $config['total_rows']  = $totalRec;
+	    $config['per_page']    = $this->perPage;
+	    $this->ajax_pagination->initialize($config);
+			//get the posts data
+	    $menu['posts'] = $this->Notif->getRows(array('limit'=>$this->perPage));
+			$menu['level'] = $this->Komentar->max();
+			$menu['akses'] = $this->Akses->selectAll();
+			$menu['tingkatan'] = $this->Tingkatan->selectAll();
+			$menu['notif'] = $this->Notif->selectAll();
+			$data['max'] = $this->Tingkatan->max();
+			$data['jabatan'] = $this->Jabatan->selectAll();
+			$data['pengirim'] = $this->Lamaran->keluar();
+			$this->load->view('template/header');
+			$this->load->view('template/menu', $menu);
+			$this->load->view('kkeluar', $data);
+			$this->load->view('template/footer', $menu);
+	}
+		public function print($id) {
+			$data['print'] = $this->Lamaran->select($id);
+			$this->load->view('cv', $data);
+		}
+	public function tes() {
+		$user_id = $this->session->userdata('user_id');
 		$menu['akses'] = $this->Akses->selectAll();
 		$menu['tingkatan'] = $this->Tingkatan->selectAll();
-		$data['jabatan'] = $this->Jabatan->selectAll();
-		$data['pengirim'] = $this->Lamaran->level($id);
-		$data['tingkatan'] = $this->Tingkatan->select($id);
-		$this->load->view('template/header');
-		$this->load->view('template/menu', $menu);
-		$this->load->view('level', $data);
-		$this->load->view('template/footer');
+		$menu['pengirim'] = $this->Lamaran->selectAll();
+		$menu['komentar'] = $this->Komentar->selectAll();
+		$menu['notif'] = $this->Komentar->notif();
+		$a = array();
+		foreach ($menu['notif'] as $key) {
+			foreach ($menu['komentar'] as $keyk) {
+				if ($key->lamaran_id == $keyk->lamaran_id) {
+					if ($keyk->user_id != $user_id) {
+						$a[]=$keyk->lamaran_id;
+					}
+				}
+			}
+		} $clear_array = array_unique($a); print_r($clear_array);
 	}
-	/*public function downfoto($id) {
-		$data = $this->Lamaran->select($id);
-		$foto = $data->foto;
-		force_download('files/'.$foto,NULL);
+	public function updatenotif() {
+		$this->Notif->update();
 	}
-	public function downcv($id) {
-		$data = $this->Lamaran->select($id);
-		$cv = $data->cv;
-		force_download('files/'.$cv,NULL);
+	public function updatenotif1() {
+		$this->Notif->update1();
 	}
-	public function downktp($id) {
-		$data = $this->Lamaran->select($id);
-		$ktp = $data->ktp;
-		force_download('files/'.$ktp,NULL);
-	}*/
+	public function cekpass() {
+		$data = $this->Login->cekpass();
+		echo $data;
+	}
+	public function updatepass() {
+		$this->User->updatepass();
+	}
 }

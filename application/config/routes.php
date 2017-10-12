@@ -50,6 +50,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['^(:any)(/:any)?$'] = "Main/$0";
+//$route['(:any)'] = "Main/$1";
+$route['karyawan(/:any)(/:any)'] = "Main/karyawan/$1/$2";
+$route['lamaran(/:any)(/:any)'] = "Main/lamaran/$1/$2";
+$route['kkeluar(/:any)(/:any)'] = "Main/kkeluar/$1/$2";
+$route['tingkat(/:any)(/:any)'] = "Main/tingkat/$1/$2";
+$route['tingkat(/:any)(/:any)(/:any)'] = "Main/tingkat/$1/$2/$3";
+$route['excel(/:any)(/:any)'] = "Main/excel/$1/$2";
+$route['tes(/:any)'] = "Main/tes/$1";
+$route['tes(/:any)(/:any)'] = "Main/tes/$1/$2";
 $route['default_controller'] = 'Main';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

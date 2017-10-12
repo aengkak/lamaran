@@ -80,4 +80,11 @@ class User extends CI_Model {
 		$this->db->insert('log', $datalog);
 		$this->db->insert_id();
 	}
+	public function updatepass() {
+		$user_id = $this->session->userdata('user_id');
+		$password = $this->input->post('baru', TRUE);
+		$data = array('password' => md5($password));
+		$this->db->where('id_user', $user_id);
+		$this->db->update('user', $data);
+	}
 }

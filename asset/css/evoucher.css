@@ -1,0 +1,92 @@
+
+
+* {
+    box-sizing: border-box;
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+[class*="col-"] {
+    float: left;
+    padding: 15px;
+}
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+.rowcollapse::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+[class*="colcollapse-"] {
+    float: left;
+    padding: 0px;
+}
+.colcollapse-1 {width: 8.33%;}
+.colcollapse-2 {width: 16.66%;}
+.colcollapse-3 {width: 25%;}
+.colcollapse-4 {width: 33.33%;}
+.colcollapse-5 {width: 41.66%;}
+.colcollapse-6 {width: 50%;}
+.colcollapse-7 {width: 58.33%;}
+.colcollapse-8 {width: 66.66%;}
+.colcollapse-9 {width: 75%;}
+.colcollapse-10 {width: 83.33%;}
+.colcollapse-11 {width: 91.66%;}
+.colcollapse-12 {width: 100%;}
+
+
+
+.dottedhorbog2 {height:100%; width:100%; background-image:url("../images/linehrb.jpg"); background-repeat:repeat-y; background-position:center; }
+.paddingremove {padding:0px!important;}
+
+.full {width:100%; float: left; }
+.setengah {width:45%; float: left; margin-right:5%;}
+
+body{margin:0 auto;}
+
+html {
+    font-family: 'Roboto', sans-serif; color:#666; font-weight:300;
+}
+h2 {font-size:2rem;line-height:1.3}
+h1 {font-size:2.625rem;line-height:1.2}
+
+hr {box-sizing: content-box;
+height: 0;
+overflow: visible;
+margin: 0 0 20px 0;
+    margin-bottom: 20px;
+border: 0;
+    border-top-width: 0px;
+    border-top-style: none;
+    border-top-color: currentcolor;
+border-top: 1px solid #e5e5e5;}
+.flexleft{-ms-flex-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start} .flex{display:-ms-flexbox;display:-webkit-flex;display:flex} a.noneline {text-decoration:none;}
+.grey, a.grey {color:#666;} .paddingsmall {padding: 15px;} .greybg {background-color: #f1f2f2;}
+.centertext {text-align:center!important} .orangebg {background:#ff6600;} .white {color:#fff;} .orange {color:#ff6600;} .black {color:#000;}
+#wrapper {position: relative;height: 1294px;width: 915px;  margin: 0 auto; } .footers {position: absolute;bottom: 0px;}
+.heading3{font-size:1.5rem;} .justbold { font-weight:700!important; }
+.heading1{font-size:2.3rem;} .marginsmallright {margin-right:10px!important} .marginsmalltop {margin-top:10px!important} .marginsmallbottom {margin-bottom:10px!important} .marginsmallleft {margin-left:10px!important} 
+.margintop {margin-top:20px!important} .marginleft {margin-left:20px!important} .marginbottom {margin-bottom:20px!important} .marginright {margin-right:20px!important}
+.textsmall {font-size:.875rem;line-height:1.5;}
+.linehr {width:100%; background-image:url("../images/linehr.jpg"); background-repeat:repeat-x; background-position:center; height:5px;} 
+.dottedhorbog {height:100%; width:100%; background-image:url("../images/dbgrh.png"); background-repeat:repeat-y; background-position:right; }
+.dottedhorbog2{height: 100%!important;
+width: 100%!important;
+background-image: url("../images/linehrb.jpg");
+background-repeat: repeat-y;
+background-position: center;}.dottedhorbog3{
+background-image: url("../images/linehrb.jpg");
+background-repeat: repeat-y;
+background-position: center;}

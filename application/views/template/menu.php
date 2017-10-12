@@ -30,16 +30,25 @@
                   <li class="dropdown avatar-dropdown">
                    <img src="<?php echo base_url('asset/img/user.png');?>" class="img-circle avatar" alt="user name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"/>
                    <ul class="dropdown-menu user-dropdown">
-                    <!-- <li><a href="<?php echo base_url('profile');?>"><span class="fa fa-user"></span> My Profile</a></li>
-                     <li role="separator" class="divider"></li> -->
+                    <li><a href="#" onclick="pass()"><span class="fa fa-lock"></span> Ganti Sandi</a></li>
+                     <li role="separator" class="divider"></li>
                      <li class="more">
                       <ul>
-                        <li><a href="<?php echo base_url('logout');?>"><span class="fa fa-power-off "></span> Log out</a></li>
+                        <li><a href="<?php echo base_url('logout');?>"><span class="fa fa-power-off "></span> Keluar</a></li>
                       </ul>
                     </li>
                   </ul>
                 </li>
-                <li ><a href="#" class="opener-right-menu"><span class="fa fa-coffee"></span></a></li>
+                <?php $o = 0;
+                $user_id = $this->session->userdata('user_id');
+                foreach ($notif as $keynotif) {
+                  if ($keynotif->user_parent == $user_id) {
+                  if ($keynotif->cek == 0) {
+                    $o = $o + 1;
+                  }
+                }
+                }?>
+                <li ><a href="#" class="opener-right-menu"><span class="fa fa-comments"><span style="color:#F44336"><?php echo $o;?></span></span></a></li>
               </ul>
             </div>
           </div>
@@ -52,13 +61,11 @@
             <div id="left-menu">
               <div class="sub-left-menu scroll">
                 <ul class="nav nav-list">
-                    <li><div class="left-bg"></div></li>
-                    <li class="time">
-                      <h1 class="animated fadeInLeft">21:00</h1>
-                      <p class="animated fadeInRight">Sat,October 1st 2029</p>
-                    </li>
+                  <li><div class="left-bg" style="height: 190px;"></div></li>
                     <li class="ripple"><a href="<?php echo base_url('home');?>"><span class="fa fa-home fa"></span>Beranda</a></li>
-					          <li class="ripple">
+                    <li class="ripple"><a href="<?php echo base_url('lamaran');?>"><span class="fa fa-file-code-o"></span>Baru</a></li>
+                    <li class="ripple"><a href="<?php echo base_url('hapus');?>"><span class="fa fa-trash"></span>Dihapus</a></li>
+                    <li class="ripple">
                       <a class="tree-toggle nav-header">
                         <span class="fa fa-pencil-square"></span> Pengaturan
                         <span class="fa-angle-right fa right-arrow text-right"></span>
@@ -74,20 +81,6 @@
                             }
                          } ?>
 					             </ul>
-                    </li>
-                    <li class="ripple"><a href="<?php echo base_url('lamaran');?>"><span class="fa fa-file-code-o"></span>Baru</a></li>
-                    <li class="ripple">
-                      <a class="tree-toggle nav-header">
-                        <span class="fa-area-chart fa"></span> Tingkatan
-                        <span class="fa-angle-right fa right-arrow text-right"></span>
-                      </a>
-                      <ul class="nav nav-list tree">
-                        <?php
-                          foreach ($tingkatan as $t) { ?>
-                            <li><a href="<?php echo base_url()?>tingkat/<?php echo $t->ke;?>"><?php echo $t->nama_tingkatan;?></a></li>
-                        <?php }
-                        ?>
-                      </ul>
                     </li>
 				       </ul>
              </div>
