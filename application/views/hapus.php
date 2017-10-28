@@ -525,7 +525,7 @@
            alert('Error deleting data');
          }
        }
-             );
+        );
      }
    }
 </script>

@@ -1,64 +1,64 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>404 Page Not Found</title>
-<style type="text/css">
 
-::selection { background-color: #E13300; color: white; }
-::-moz-selection { background-color: #E13300; color: white; }
+  <meta charset="utf-8">
+  <meta name="description" content="Karunia Travel">
+  <meta name="author" content="Endeavor">
+  <meta name="keyword" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Karunia Travel</title>
 
-body {
-	background-color: #fff;
-	margin: 40px;
-	font: 13px/20px normal Helvetica, Arial, sans-serif;
-	color: #4F5155;
-}
+  <!-- start: Css -->
+  <link rel="stylesheet" type="text/css" href="asset/css/bootstrap.min.css">
 
-a {
-	color: #003399;
-	background-color: transparent;
-	font-weight: normal;
-}
+  <!-- plugins -->
+  <link rel="stylesheet" type="text/css" href="asset/css/plugins/font-awesome.min.css"/>
+  <link rel="stylesheet" type="text/css" href="asset/css/plugins/simple-line-icons.css"/>
+  <link rel="stylesheet" type="text/css" href="asset/css/plugins/animate.min.css"/>
+  <link href="asset/css/style.css" rel="stylesheet">
+  <!-- end: Css -->
 
-h1 {
-	color: #444;
-	background-color: transparent;
-	border-bottom: 1px solid #D0D0D0;
-	font-size: 19px;
-	font-weight: normal;
-	margin: 0 0 14px 0;
-	padding: 14px 15px 10px 15px;
-}
+  <link rel="shortcut icon" href="asset/img/logomi.png">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
 
-code {
-	font-family: Consolas, Monaco, Courier New, Courier, monospace;
-	font-size: 12px;
-	background-color: #f9f9f9;
-	border: 1px solid #D0D0D0;
-	color: #002166;
-	display: block;
-	margin: 14px 0 14px 0;
-	padding: 12px 10px 12px 10px;
-}
+  <body id="mimin">
 
-#container {
-	margin: 10px;
-	border: 1px solid #D0D0D0;
-	box-shadow: 0 0 8px #D0D0D0;
-}
+  <div class="col-md-12">
 
-p {
-	margin: 12px 15px 12px 15px;
-}
-</style>
-</head>
-<body>
-	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
-	</div>
+    <!-- start: Content -->
+    <center>
+      <div class="page-404 animated flipInX">
+        <img src="asset/img/404.png" class="img-responsive"/>
+        <a href="index"> Back To Home
+          </br>
+          <span class="icons icon-arrow-down"></span>
+        </a>
+      </div>
+    </center>
+    <!-- end: content -->
+  </div>
+
+<!-- start: Javascript -->
+<script src="asset/js/jquery.min.js"></script>
+<script src="asset/js/jquery.ui.min.js"></script>
+<script src="asset/js/bootstrap.min.js"></script>
+
+
+<!-- plugins -->
+<script src="asset/js/plugins/moment.min.js"></script>
+<script src="asset/js/plugins/jquery.nicescroll.js"></script>
+
+
+<!-- custom -->
+<script src="asset/js/main.js"></script>
+<script type="text/javascript">
+</script>
+<!-- end: Javascript -->
 </body>
 </html>

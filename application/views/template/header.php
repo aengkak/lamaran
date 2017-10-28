@@ -29,6 +29,7 @@ if($this->session->userdata('status') != "login"){
 			<link rel="stylesheet" type="text/css" href="<?php echo base_url('asset/css/plugins/icheck/skins/flat/_all.css');?>"/>
 			<link href="<?php echo base_url('asset/css/style.css');?>" rel="stylesheet">
 			<link rel="stylesheet" type="text/css" href="<?php echo base_url('asset/css/bootstrap.css');?>">
+			<link rel="stylesheet" href="<?php echo base_url();?>asset/dist/css/bootstrap-colorpicker.min.css">
 	<!-- end: Css -->
 	<script>
 			function hanyaAngka(evt) {
@@ -42,6 +43,7 @@ if($this->session->userdata('status') != "login"){
 		<script src="<?php echo base_url('asset/js/jquery.min.js');?>"></script>
 		<script src="<?php echo base_url('asset/js/jquery.ui.min.js');?>"></script>
 		<script src="<?php echo base_url('asset/js/bootstrap.min.js');?>"></script>
+		<script src="<?php echo base_url();?>asset/dist/js/bootstrap-colorpicker.min.js"></script>
 
 	<link rel="shortcut icon" href="<?php echo base_url('asset/img/logomi.png');?>">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -49,4 +51,24 @@ if($this->session->userdata('status') != "login"){
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+		<script>
+		var myVar;
+		$(window).on('load',function(){
+			myVar = setInterval(alertFunc, 15 * 60 * 1000);
+		});
+		function alertFunc() {
+			$.ajax({
+		  type: "POST",
+		  url: "<?php echo base_url('checkses')?>",
+		  success: function(data){
+		     if (data == 1) {
+
+		     } else {
+		     	alert("Sesi Masuk Habis");
+					window.location.href="<?php echo base_url();?>login";
+		     }
+		  }
+		  });
+		}
+		</script>
   </head>

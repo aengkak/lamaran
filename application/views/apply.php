@@ -95,8 +95,7 @@
                                           <select id="jabatan_id" name="jabatan_id" class="form-control" required onChange="getJ(this.value);" required>
                                              <option value="" style="display:none">Pilih</option>
                                              <?php foreach ($jabatan as $j): ?>
-                                             <option value="<?php echo $j->id_jabatan;?>"><?php echo $j->
-                                                nama_jabatan;?></option>
+                                             <option value="<?php echo $j->id_jabatan;?>"><?php echo $j->nama_jabatan;?></option>
                                              <?php endforeach?>
                                           </select>
                                        </div>
@@ -177,7 +176,7 @@
                                     <div class="form-group">
                                        <label class="control-label col-md-3">Nomor Telepon</label>
                                        <div class="col-md-9">
-                                          <input name="no_telp" id="telp" maxlength="12" id="no_telp" placeholder="08xxx" onkeypress="return hanyaAngka(event)" class="col-md-12" type="text" required>
+                                          <input name="no_telp" id="telp" maxlength="20" id="no_telp" placeholder="08xxx" onkeypress="return hanyaAngka(event)" class="col-md-12" type="text" required>
                                        </div>
                                     </div>
                                     <div class="form-group">
@@ -208,6 +207,20 @@
                               </div>
                               <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                                  <div class="panel-body">
+                                   <div class="form-group">
+                                      <label class="control-label col-md-3">Info Lowongan Dari </label>
+                                      <div class="col-md-9">
+                                         <select id="informasi" name="informasi" class="form-control" required onChange="getInf(this.value);" required>
+                                            <option value="" style="display:none">Pilih</option>
+                                            <?php foreach ($informasi as $keyi): ?>
+                                            <option value="<?php echo $keyi->informasi;?>"><?php echo $keyi->informasi;?></option>
+
+                                            <?php endforeach?>
+                                            <option value="kosong"> Pilihan Tidak Ada</option>
+                                         </select>
+                                      </div>
+                                   </div>
+                                   <div id="inf"></div>
                                     <div class="form-group">
                                        <label class="control-label col-md-3">Promosikan Diri Anda</label>
                                        <div class="col-md-9">
@@ -299,6 +312,18 @@
              $(this).tab('show');
            });
          });
+      </script>
+      <script>
+      function getInf(val) {
+        $.ajax({
+        type: "POST",
+        url: "<?php echo base_url('selectinf')?>",
+        data:$('#form').serialize(),
+        success: function(data){
+           $("#inf").html(data);
+        }
+        });
+      }
       </script>
       <script>
          function getJ(val) {

@@ -11,9 +11,11 @@ class Komentar extends CI_Model {
 	public function Add() {
     $user_id = $this->session->userdata('user_id');
     $lamaran_id = $this->input->post('lamaran_id');
-	  $isi = $this->input->post('isi');
+	  $is = $this->input->post('isi');
+		$isi = nl2br($is);
     $rate = $this->input->post('rate');
 		$clulus = $this->input->post('clulus');
+		$kosong = $this->input->post('kosong');
 		date_default_timezone_set('Asia/Jakarta');
 		$date = date('Y-m-d');
 		$user_id = $this->session->userdata('user_id');
@@ -62,7 +64,7 @@ class Komentar extends CI_Model {
 				if ($rate != NULL) {
 					if ($sub == "Y") {
 						$data = array('user_id' => $user_id, 'lamaran_id' => $lamaran_id, 'isi' => $isi,
-				                  'rate' => $rate."1", 'tgl_komen' => $date);
+				                  'rate' => $rate."0", 'tgl_komen' => $date);
 						$this->db->insert('komentar', $data);
 						$this->db->insert_id();
 
@@ -75,7 +77,7 @@ class Komentar extends CI_Model {
 						$this->db->insert('komentar', $data);
 						$this->db->insert_id();
 
-						$data1 = array('level' => $rate."1");
+						$data1 = array('level' => $rate."0");
 						$this->db->where('id_lamaran', $lamaran_id);
 						$this->db->update('lamaran', $data1);
 					}
@@ -118,24 +120,29 @@ class Komentar extends CI_Model {
 							$rate1 = $max->rate;
 							$a = substr($rate1,1);
 							$b = $a + "1";
+							$statlevel = $lamaran->level;
+							$c = substr($statlevel,1);
+							$d = $c + "1";
 							$data = array('user_id' => $user_id, 'lamaran_id' => $lamaran_id, 'isi' => $isi,
-					                  'rate' => $rate.$b, 'tgl_komen' => $date);
+					                  'rate' => $rate.$c, 'tgl_komen' => $date);
 							$this->db->insert('komentar', $data);
 							$this->db->insert_id();
 
-							$data1 = array('level' => $rate.$b);
+							$data1 = array('level' => $rate.$d);
 							$this->db->where('id_lamaran', $lamaran_id);
 							$this->db->update('lamaran', $data1);
 						} else {
 							$rate1 = $max->rate;
 							$a = substr($rate1,1);
 							$b = $a;
+							$statlevel = $lamaran->level;
+							$c = substr($statlevel,1);
 							$data = array('user_id' => $user_id, 'lamaran_id' => $lamaran_id, 'isi' => $isi,
-					                  'rate' => $rate.$b, 'tgl_komen' => $date);
+					                  'rate' => $rate.$c, 'tgl_komen' => $date);
 							$this->db->insert('komentar', $data);
 							$this->db->insert_id();
 
-							$data1 = array('level' => $rate.$b);
+							$data1 = array('level' => $rate.$c);
 							$this->db->where('id_lamaran', $lamaran_id);
 							$this->db->update('lamaran', $data1);
 						}
@@ -143,8 +150,10 @@ class Komentar extends CI_Model {
 						$rate1 = $max->rate;
 						$a = substr($rate1,1);
 						$b = $a;
+						$statlevel = $lamaran->level;
+						$c = substr($statlevel,1);
 						$data = array('user_id' => $user_id, 'lamaran_id' => $lamaran_id, 'isi' => $isi,
-													'rate' => "C".$b, 'tgl_komen' => $date);
+													'rate' => "C".$c, 'tgl_komen' => $date);
 						$this->db->insert('komentar', $data);
 						$this->db->insert_id();
 					}
@@ -169,6 +178,54 @@ class Komentar extends CI_Model {
 			$datalog = array('user_id' => $user_id, 'ket' => "Mengomentari"." ".$lamaran->nama, 'waktu' => $waktu);
 			$this->db->insert('log', $datalog);
 			$this->db->insert_id();
+		} else {
+			if ($rate != NULL) {
+				if ($kosong != NULL) {
+					if($rate == "Y") {
+						$data1 = array('level' => $rate."1");
+						$this->db->where('id_lamaran', $lamaran_id);
+						$this->db->update('lamaran', $data1);
+						$komen = "Ok";
+						$ni = 0;
+					} elseif($rate == "P") {
+						$komen = "Meragukan";
+						$data1 = array('level' => $rate."0");
+						$this->db->where('id_lamaran', $lamaran_id);
+						$this->db->update('lamaran', $data1);
+						$ni = 0;
+					} else {
+						$data1 = array('level' => $rate."0");
+						$this->db->where('id_lamaran', $lamaran_id);
+						$this->db->update('lamaran', $data1);
+						$komen = "Tidak Cocok";
+						$ni = 0;
+					}
+					$data = array('user_id' => $user_id, 'lamaran_id' => $lamaran_id, 'isi' => $komen,
+												'rate' => $rate.$ni, 'tgl_komen' => $date);
+					$this->db->insert('komentar', $data);
+					$this->db->insert_id();
+
+					$this->db->where('lamaran_id', $lamaran_id);
+					$notif = $this->db->get('komentar')->result();
+					if ($num != 0) {
+						$userp = array();
+						foreach ($notif as $keynotif) {
+							if ($keynotif->user_id != $user_id) {
+								$userp[] = $keynotif->user_id;
+							}
+						} $clear_array = array_unique($userp);
+						foreach ($clear_array as $keyc => $valuec) {
+							$datanotif = array('lamaran_id' => $lamaran_id, 'user_parent' => $valuec, 'user_comment' => $user_id, 'date' => $date, 'cek' => 0);
+							$this->db->insert('notif', $datanotif);
+							$this->db->insert_id();
+						}
+					}
+					$datalog = array('user_id' => $user_id, 'ket' => "Mengomentari"." ".$lamaran->nama, 'waktu' => $waktu);
+					$this->db->insert('log', $datalog);
+					$this->db->insert_id();
+				}
+			}
+
 		}
 
   }
@@ -193,5 +250,33 @@ class Komentar extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		$this->db->order_by('id_komentar', 'desc');
 		return $this->db->get()->result();
+	}
+	public function level($id) {
+		$this->db->like('rate', $id);
+    return $this->db->get('komentar')->result();
+	}
+	public function bataltolak($id) {
+		$user_id = $this->session->userdata('user_id');
+		date_default_timezone_set('Asia/Jakarta');
+		$date = date('Y-m-d');
+		$waktu = date('Y-m-d H:i:s');
+		$this->db->where('id_lamaran', $id);
+		$lamaran = $this->db->get('lamaran')->row();
+
+		$level = $lamaran->level;
+		$sub = substr($level,1);
+		$sub1 = substr($level,0,1);
+			$data = array('user_id' => $user_id, 'lamaran_id' => $id, 'isi' => "Kesalahan Penolakan",
+										'rate' => "P".$sub, 'tgl_komen' => $date);
+			$this->db->insert('komentar', $data);
+			$this->db->insert_id();
+
+			$data1 = array('level' => "P".$sub);
+			$this->db->where('id_lamaran', $id);
+			$this->db->update('lamaran', $data1);
+
+			$datalog = array('user_id' => $user_id, 'ket' => "Membatalkan Penolakan"." ".$lamaran->nama, 'waktu' => $waktu);
+			$this->db->insert('log', $datalog);
+			$this->db->insert_id();
 	}
 }

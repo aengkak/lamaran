@@ -46,6 +46,11 @@
 				</div>
 				<?php $no++; endforeach; ?>
 				<?php endif; ?>
+				<?php if ($lamaran->informasi != NULL){ ?>
+				<div class="form-group">
+					<label><b>Informasi Lowongan :</b> <?php echo $lamaran->informasi;?></label>
+				</div>
+				<?php } ?>
 				<?php if ($lamaran->ket != NULL){ ?>
 				<div class="form-group">
 					<label><b>Keterangan Tambahan :</b> <?php echo $lamaran->ket;?></label>

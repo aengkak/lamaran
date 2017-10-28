@@ -10,7 +10,8 @@ class Tingkatan extends CI_model {
     $status = "1";
 		$nama_tingkatan = $this->input->post('nama_tingkatan');
     $ke = $this->input->post('ke');
-		$data = array('nama_tingkatan' => $nama_tingkatan, 'ke' => $ke, 'status' => $status);
+    $warna = $this->input->post('warna');
+		$data = array('nama_tingkatan' => $nama_tingkatan, 'ke' => $ke, 'warna' => $warna, 'status' => $status);
 		$this->db->insert('tingkatan', $data);
 		$this->db->insert_id();
 
@@ -42,7 +43,8 @@ class Tingkatan extends CI_model {
 		$id = $this->input->post('id_tingkatan');
     $ke = $this->input->post('ke');
 		$nama_tingkatan = $this->input->post('nama_tingkatan');
-		$data = array('nama_tingkatan' => $nama_tingkatan, 'ke' => $ke);
+    $warna = $this->input->post('warna');
+		$data = array('nama_tingkatan' => $nama_tingkatan, 'ke' => $ke, 'warna' => $warna);
 		$this->db->where('id_tingkatan', $id);
 		$this->db->update('tingkatan', $data);
 

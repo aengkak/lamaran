@@ -39,6 +39,11 @@
 				</div>
 				<?php $no++; endforeach; ?>
 				<?php endif; ?>
+				<?php if ($lamaran->informasi != NULL){ ?>
+				<div class="form-group">
+					<label><b>Informasi Lowongan :</b> <?php echo $lamaran->informasi;?></label>
+				</div>
+				<?php } ?>
 				<?php if ($lamaran->ket != NULL){ ?>
 				<div class="form-group">
 					<label><b>Keterangan Tambahan :</b> <?php echo $lamaran->ket;?></label>
@@ -102,13 +107,14 @@
 				<?php }
 			 	$no++; } } ?>
 			<input type="hidden" value="<?php echo $lamaran->id_lamaran;?>" name="lamaran_id">
+			<input type="hidden" name="kosong" value="Ok">
 				<?php $jabatan_id = $this->session->userdata('jabatan_id');
 			$res = explode(',',$jabatan_id);
 			if ($rate == NULL) { ?>
 				<div class="form-group">
 					<label class="control-label col-md-3">Komentar</label>
 					<div class="col-md-9">
-						<textarea class="form-control" name="isi" required></textarea>
+						<textarea class="form-control" id="isi" name="isi" required></textarea>
 					</div>
 				</div>
 				<div class="form-group">
@@ -138,6 +144,7 @@
 			$substr1 = substr($rr,0,1);
 							if ($substr1 != "N") {
 							?>
+
 							<div class="form-group">
 								<label class="control-label col-md-3">Komentar</label>
 								<div class="col-md-9">

@@ -98,6 +98,7 @@
       $('#modal_form').modal('show'); // show bootstrap modal
       $("#modalbody").load("<?php echo base_url();?>modalt/",function(data){
 		      $("#modalbody").html(data);
+					$('#warna').colorpicker();
 	    });
     }
     function edit(id)
@@ -107,6 +108,7 @@
       $('#modal_form').modal('show'); // show bootstrap modal
       $("#modalbody").load("<?php echo base_url();?>tedit/"+id,function(data){
 		      $("#modalbody").html(data);
+					$('#warna').colorpicker();
 	    });
     }
     function save3()

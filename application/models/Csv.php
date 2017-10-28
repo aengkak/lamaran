@@ -3,7 +3,8 @@ class Csv extends CI_Model {
   public function import() {
     date_default_timezone_set('Asia/Jakarta');
     $date = date('Y-m-d');
-    $level = ("Y1");
+    $level = ("Y0");
+    $level1 = ("Y1");
     $user_id = $this->session->userdata('user_id');
     $status = 1;
         $filename=$_FILES["file"]["tmp_name"];
@@ -24,7 +25,7 @@ class Csv extends CI_Model {
            					   'email' => $importdata[8],
            					   'jabatan_id' => $importdata[9],
                        'tgl' => $date,
-                       'level' => $level,
+                       'level' => $level1,
                        'status' => $status
                         );
                         $this->db->insert('lamaran', $data);

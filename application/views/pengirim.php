@@ -16,14 +16,9 @@
    <div class="col-md-12">
       <div class="panel-heading">
          <div class="btn-group" role="group">
-            <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="fa fa-pencil-square-o"></span> Tambah
-            <span class="fa fa-angle-down"></span>
+            <button type="button" onclick="csv()" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="fa fa-pencil-square-o"></span> Import Csv
             </button>
-            <ul class="dropdown-menu">
-               <li><a href="#" onclick="add()">Tambah</a></li>
-               <li><a href="#" onclick="csv()">Import</a></li>
-            </ul>
          </div>
       </div>
    </div>
@@ -51,9 +46,9 @@
                                $cc2 = substr($cc,0,1);
                                if ($cc1 == 0) {
                              if ($cc2 == "P") {
-                             	# code...
+                             	$counting = $counting +0;
                              } elseif ($cc2 == "N") {
-                             	# code...
+                             	$counting = $counting +0;
                             } elseif ($cc2 == "L") {
                               $counting = $counting +0;
                             } elseif ($cc2 == "K") {
@@ -69,6 +64,13 @@
                </h4>
             </div>
             <div id="collapse<?php echo $i;?>" class="panel-collapse collapse <?php if($ur == $key->id_jabatan){ echo 'in'; }?>" role="tabpanel" aria-labelledby="heading<?php echo $i;?>">
+              <div class="panel-heading">
+              <div style="padding-left: 0px;margin-left: 1px;" class="btn-group" role="group">
+                 <button type="button" onclick="add(<?php echo $key->id_jabatan;?>)" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 <span class="fa fa-pencil-square-o"></span> Tambah
+                 </button>
+              </div>
+            </div>
                <div class="panel-body">
                   <div class="responsive-table">
                      <table id="datatables-example<?php echo $key->id_jabatan;?>" class="table table-striped table-bordered" width="100%" cellspacing="0">
@@ -111,7 +113,7 @@
                                 if($cek != "Lulus"){
                                 if ($cek1 == 0) {
                                   if ($cek2 == "Y") {
-                                  } else { ?>
+                                  } else { if($cek2 != "N"){ ?>
                            <tr>
                               <td>
                                  <?php echo $no;?>
@@ -180,7 +182,7 @@
                                  <?php } endforeach; ?> -->
                               </td>
                            </tr>
-                           <?php $no++; } } }
+                           <?php $no++; } } } }
                               }
                               } ?>
                            <?php endforeach;?>
@@ -350,17 +352,45 @@
    }
 </script>
 <script type="text/javascript">
-   function add()
+   function add(id)
    {
      $('#form1')[0].reset(); // reset form on modals
-     $('#modal_form1').modal('show'); // show bootstrap modal
-     $("#modalbody1").load("<?php echo base_url();?>addlamaran/",function(data){
+     $('#modal_form1').modal({backdrop: 'static', keyboard: false},'show')  ; // show bootstrap modal
+     $("#modalbody1").load("<?php echo base_url();?>addlamaran/"+id,function(data){
          $("#modalbody1").html(data);
          $('#datepicker').bootstrapMaterialDatePicker
      			({
      				time: false,
              maxDate: '<?php echo $date;?>'
      			});
+          $('#tgl').bootstrapMaterialDatePicker
+      			({
+      				time: false
+      			});
+            $.ajax({
+           	type: "POST",
+           	url: "<?php echo base_url('selectj1')?>",
+           	data:$('#form1').serialize(),
+           	success: function(data){
+               $("#dll").html(data);
+               var maxField = 10; //Input fields increment limitation
+               var addButton = $('.add_button'); //Add button selector
+               var wrapper = $('.field_wrapper'); //Input field wrapper
+               var fieldHTML = '<div><input type="file" name="dll[]" id="pdf" onchange="return filepdf()" accept=".pdf, .docx" value="" class="form-control" required/><a href="javascript:void(0);" class="remove_button" title="Remove field"><img src="asset/img/remove-icon.png"/></a></div>'; //New input field html
+               var x = 1; //Initial field counter is 1
+               $(addButton).click(function(){ //Once add button is clicked
+                   if(x < maxField){ //Check maximum number of input fields
+                       x++; //Increment field counter
+                       $(wrapper).append(fieldHTML); // Add field html
+                   }
+               });
+               $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+                   e.preventDefault();
+                   $(this).parent('div').remove(); //Remove field html
+                   x--; //Decrement field counter
+               });
+           	}
+           	});
      });
      $("#form1").on('submit',(function(e) {
        e.preventDefault();
@@ -432,7 +462,7 @@
        var maxField = 10; //Input fields increment limitation
        var addButton = $('.add_button'); //Add button selector
        var wrapper = $('.field_wrapper'); //Input field wrapper
-       var fieldHTML = '<div><input type="file" name="dll[]" id="pdf" onchange="return filepdf()" accept=".pdf" value="" class="form-control" required/><a href="javascript:void(0);" class="remove_button" title="Remove field"><img src="asset/img/remove-icon.png"/></a></div>'; //New input field html
+       var fieldHTML = '<div><input type="file" name="dll[]" id="pdf" onchange="return filepdf()" accept=".pdf, .docx" value="" class="form-control" required/><a href="javascript:void(0);" class="remove_button" title="Remove field"><img src="asset/img/remove-icon.png"/></a></div>'; //New input field html
        var x = 1; //Initial field counter is 1
        $(addButton).click(function(){ //Once add button is clicked
            if(x < maxField){ //Check maximum number of input fields
@@ -516,10 +546,35 @@
      $("#" + id).modal('show');
    }
    function save3()
-   { if($('#isi').val() == ''){
-     alert('isi komentar.');
-     return false;
-     } else {
+   {
+     if ($('#isi').val() == '')  {
+       if ($("#rate:checked,#rate1:checked,#rate2:checked").length == 0)
+     {
+       alert('Pilih Nilai.');
+       } else {
+       if(confirm('Yakin akan berkomentar?'))
+       {
+         // ajax adding data to database
+         $.ajax({
+           url : "<?php echo base_url('addrate')?>",
+           type: "POST",
+           data: $('#form').serialize(),
+           success: function(data)
+           {
+             //if success close modal and reload ajax table
+             $('#modal_form').modal('hide');
+             location.reload()// for reload a page
+           }
+           ,
+           error: function (jqXHR, textStatus, errorThrown)
+           {
+             alert('Error');
+           }
+         }
+         );
+       }
+     }
+   } else {
      if(confirm('Yakin akan berkomentar?'))
      {
        // ajax adding data to database
@@ -542,6 +597,7 @@
        );
      }
    }
+
    }
    function reject(id)
    {
@@ -589,3 +645,16 @@
       });
   </script>
 <?php } ?>
+
+<script>
+function getInf(val) {
+  $.ajax({
+  type: "POST",
+  url: "<?php echo base_url('selectinf')?>",
+  data:$('#form1').serialize(),
+  success: function(data){
+     $("#inf").html(data);
+  }
+  });
+}
+</script>

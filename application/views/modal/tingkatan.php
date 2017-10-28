@@ -18,6 +18,12 @@
       </select>
     </div>
   </div>
+  <div class="form-group">
+    <label class="control-label col-md-3">Warna Penanda</label>
+    <div class="col-md-9">
+      <input name="warna" placeholder="Warna" value="#286090" id="warna" class="col-md-12" type="text">
+    </div>
+  </div>
 <?php } else { ?>
   <input name="id_tingkatan" value="<?php echo $tingkatan->id_tingkatan;?>" class="form-control" type="hidden" required>
   <div class="form-group">
@@ -35,6 +41,12 @@
           <option <?php if ($i == $tingkatan->ke) echo 'selected = "selected"'; ?> value="<?php echo $i;?>"><?php echo $i;?></option>
         <?php } ?>
       </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-md-3">Warna Penanda</label>
+    <div class="col-md-9">
+      <input name="warna" value="<?php echo $tingkatan->warna;?>" placeholder="Warna" id="warna" class="col-md-12" type="text">
     </div>
   </div>
 <?php } ?>

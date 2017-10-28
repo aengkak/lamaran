@@ -94,12 +94,12 @@
                             }
                           }
                         } ?>
-                        <td><div align="center"><a class="btn btn-round btn-default" href="<?php echo base_url('tingkat/'.$key1->id_jabatan."/".$key2->ke);?>"><?php echo $yes1."/".$pending1;?></a></div></td>
+                        <td><div align="center"><a class="btn btn-round btn-default" href="<?php echo base_url('tingkat/'.$key1->id_jabatan."/".$key2->ke);?>"><font color = "<?php echo $key2->warna;?>"><?php echo $yes1."/".$pending1;?></font></a></div></td>
 
                         <?php } ?>
-                        <td><div align="center" style="color:#F44336"><?php echo $nn;?></div></td>
+                        <td><div align="center"><a class="btn btn-round btn-danger" href="<?php echo base_url('ditolak/'.$key1->id_jabatan);?>"><?php echo $nn;?></a></div></td>
                         <td><div align="center"><a class="btn btn-round btn-default" href="<?php echo base_url('karyawan/'.$key1->id_jabatan);?>"><?php echo $ll;?></a></div></td>
-                        <td><div align="center"><a class="btn btn-round btn-default" href="<?php echo base_url('kkeluar/'.$key1->id_jabatan);?>"><div style="color:#F44336"><?php echo $kk;?></div></a></div></td>
+                        <td><div align="center"><a class="btn btn-round btn-danger" href="<?php echo base_url('kkeluar/'.$key1->id_jabatan);?>"><?php echo $kk;?></a></div></td>
                         </tr>
                         <?php } ?>
                     </tbody>

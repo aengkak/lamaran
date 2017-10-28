@@ -32,7 +32,7 @@
                            foreach ($pengirim as $p) {
                              if ($key->id_jabatan == $p->jabatan_id) {
                              $cc = $p->level; $cc1 = substr($cc,1); $cc2 = substr($cc,0,1);
-                             if ($cc1 == $cc1) {
+                             if ($cc2 != "N") {
                                $counting = $counting +1;
                            }
                            }
@@ -80,7 +80,7 @@
                            <?php $no = 1; foreach ($pengirim as $p) :
                               if ($p->jabatan_id == $key->id_jabatan) {
                               $cek = $p->level; $cek1 = substr($cek,1); $cek2 = substr($cek,0,1);
-                              if ($cek1 == $cek1) { ?>
+                              if ($cek2 != "N") { ?>
                            <tr>
                              <td>
                                <?php $a = $p->level; $b = substr($a,0,1);
@@ -94,7 +94,20 @@
                                  <?php echo $no;?>
                               </td>
                               <td>
-                                 <?php echo $p->nama;?>
+                                 <?php $user_id = $this->session->userdata('user_id');
+                                 $hitung = 0;
+                                 foreach ($komentar as $keykom) {
+                                   if ($keykom->lamaran_id == $p->id_lamaran) {
+                                     if ($keykom->user_id == $user_id) {
+                                       $hitung = $hitung +1;
+                                     }
+                                   }
+                                 } if ($hitung > 0) { ?>
+                                   <font color ="#2196f3"> <?php echo $p->nama; ?> </font>
+                                <?php } else {
+                                  echo $p->nama;
+                                 }
+                                  ?>
                               </td>
                               <td>
                                  <?php echo $p->tgl_lahir." ";
@@ -312,6 +325,33 @@
          if ($('#isi').val() == '') {
            alert('Data Kosong');
          } else {
+           if(confirm('Lanjutkan?'))
+           {
+             $.ajax({
+               url: "<?php echo base_url('addrate')?>",
+               type: "POST",
+               data:  new FormData(this),
+               contentType: false,
+               cache: false,
+               processData:false,
+               beforeSend: function(){
+              $('#loading').html("<img src='<?php echo base_url();?>asset/img/bx_loader.gif' /> Proses!");
+              },
+               success: function(data)
+                 {
+                   $('#modal_form').modal('hide');
+                   location.reload();
+                 },
+                 error: function (jqXHR, textStatus, errorThrown)
+                 {
+                     alert('');
+                 }
+              });
+           }
+         }
+       } else {
+         if(confirm('Lanjutkan?'))
+         {
            $.ajax({
              url: "<?php echo base_url('addrate')?>",
              type: "POST",
@@ -333,27 +373,6 @@
                }
             });
          }
-       } else {
-         $.ajax({
-           url: "<?php echo base_url('addrate')?>",
-           type: "POST",
-           data:  new FormData(this),
-           contentType: false,
-           cache: false,
-           processData:false,
-           beforeSend: function(){
-          $('#loading').html("<img src='<?php echo base_url();?>asset/img/bx_loader.gif' /> Proses!");
-          },
-           success: function(data)
-             {
-               $('#modal_form').modal('hide');
-               location.reload();
-             },
-             error: function (jqXHR, textStatus, errorThrown)
-             {
-                 alert('');
-             }
-          });
        }
      }));
 

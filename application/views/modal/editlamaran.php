@@ -71,13 +71,13 @@
           <div class="form-group">
             <label class="control-label col-md-3">Nomor Telepon</label>
             <div class="col-md-9">
-              <input name="no_telp" maxlength="12" value="<?php echo $pengirim->no_telp;?>" id="no_telp" placeholder="Nomor Telepon" onkeypress="return hanyaAngka(event)" class="col-md-12" type="text" required>
+              <input name="no_telp" maxlength="20" value="<?php echo $pengirim->no_telp;?>" id="no_telp" placeholder="Nomor Telepon" onkeypress="return hanyaAngka(event)" class="col-md-12" type="text" required>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-3">Nomor WhatsApp</label>
             <div class="col-md-9">
-              <input name="no_wa" maxlength="12" id="no" value="<?php echo $pengirim->no_wa;?>" placeholder="Nomor WhatsApp" onkeypress="return hanyaAngka(event)" class="col-md-12" type="text" required>
+              <input name="no_wa" maxlength="20" id="no" value="<?php echo $pengirim->no_wa;?>" placeholder="Nomor WhatsApp" onkeypress="return hanyaAngka(event)" class="col-md-12" type="text" required>
             </div>
           </div>
           <div class="form-group">

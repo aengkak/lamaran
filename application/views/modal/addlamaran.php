@@ -7,9 +7,10 @@
             <label class="control-label col-md-3">Posisi</label>
             <div class="col-md-9">
               <select name="jabatan_id" class="form-control" required onChange="getJ(this.value);">
-                <option value="" style="display:none">Pilih</option>
-                <?php foreach ($jabatan as $j): ?>
-                <option value="<?php echo $j->id_jabatan;?>"><?php echo $j->nama_jabatan;?></option>
+                <?php foreach ($jabatan as $j):
+                  if ($j->id_jabatan == $id) { ?>
+                    <option value="<?php echo $j->id_jabatan;?>"><?php echo $j->nama_jabatan;?></option>
+                  <?php } ?>
                 <?php endforeach?>
               </select>
             </div>
@@ -21,9 +22,9 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3">Tanggal Lahir</label>
+            <label class="control-label col-md-3">Umur</label>
             <div class="col-md-9">
-              <input name="tgl_lahir" id="datepicker" placeholder="Tanggal Lahir" class="col-md-12" type="text" required>
+              <input name="tgl_lahir" placeholder="Umur" class="col-md-12" type="text" required>
             </div>
           </div>
           <div class="form-group">
@@ -77,13 +78,13 @@
           <div class="form-group">
             <label class="control-label col-md-3">Nomor Telepon</label>
             <div class="col-md-9">
-              <input name="no_telp" maxlength="12" id="no_telp" placeholder="Nomor Telepon" onkeypress="return hanyaAngka(event)" class="col-md-12" type="text" required>
+              <input name="no_telp" maxlength="20" id="no_telp" placeholder="Nomor Telepon" class="col-md-12" type="text" required>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-3">Nomor WhatsApp</label>
             <div class="col-md-9">
-              <input name="no_wa" maxlength="12" id="no" placeholder="Nomor WhatsApp" onkeypress="return hanyaAngka(event)" class="col-md-12" type="text">
+              <input name="no_wa" maxlength="20" id="no" placeholder="Nomor WhatsApp" class="col-md-12" type="text">
             </div>
           </div>
           <div class="form-group">
@@ -97,6 +98,26 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
+          <div class="form-group">
+            <label class="control-label col-md-3">Tanggal Melamar</label>
+            <div class="col-md-9">
+              <input name="tgl" id="tgl" placeholder="Tanggal Melamar" class="col-md-12" type="text" required>
+            </div>
+          </div>
+          <div class="form-group">
+             <label class="control-label col-md-3">Lowongan Dari </label>
+             <div class="col-md-9">
+                <select id="informasi" name="informasi" class="form-control" required onChange="getInf(this.value);" required>
+                   <option value="" style="display:none">Pilih</option>
+                   <?php foreach ($informasi as $keyi): ?>
+                   <option value="<?php echo $keyi->informasi;?>"><?php echo $keyi->informasi;?></option>
+
+                   <?php endforeach?>
+                   <option value="kosong"> Pilihan Tidak Ada</option>
+                </select>
+             </div>
+          </div>
+          <div id="inf"></div>
           <div class="form-group">
             <label class="control-label col-md-3">Keterangan Tambahan</label>
             <div class="col-md-9">
